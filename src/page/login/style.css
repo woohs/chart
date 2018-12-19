@@ -1,0 +1,15 @@
+.login-form{
+  max-width: 768px;
+  width: 60%;
+  margin: 0 auto;
+  color: red;
+}
+.login-form-name{
+  margin: 10rem 0;
+  height: 3rem;
+  font-size: 20px;
+}
+.login-form-button{
+  height: 3rem;
+  font-size: 20px;
+}
