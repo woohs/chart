@@ -1,0 +1,36 @@
+.header-row{
+  padding: .5rem 2rem;
+  text-align: center;
+  font-size: 1rem;
+  background-color: #001529;
+  color: #fff;
+}
+.header-col-1{
+  text-align: left;
+}
+.header-col-2{
+  text-align: center;
+}
+.header-col-3{
+  text-align: right;
+}
+.footer-row{
+  width: 100%;
+  position: fixed;
+  bottom:0px;
+  padding: .2rem .1rem;
+  background-color: #f0f0f0;
+}
+.footer-row input{
+  width: 75%;
+  margin: 0 .2rem;
+}
+.footer-row button{
+  width: 20%;
+  margin: 0 .2rem;
+}
+.content-row{
+  padding: .5rem .1rem 2rem .1rem;
+  background-color: #fff;
+  min-height: 10rem;
+}
