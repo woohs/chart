@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import ClickCounter from './ClickCounter';
-import LoginForm from './page/login';  
+import Main from './page/main';  
 
+console.log(<Main />);
 ReactDOM.render(
-  <LoginForm />, 
+  <Main />, 
   document.getElementById('root')
 );
 

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Form, Input, Button, Icon } from 'antd';
 import style from './style.css';
+import { Redirect,withRouter } from 'react-router-dom';
 
 const FormItem = Form.Item;
 
@@ -8,9 +9,11 @@ class Login extends Component{
 
   handleSubmit = (e) => {
     e.preventDefault();
+    let history = this.props.history;
     this.props.form.validateFields((err, values) =>{
       if(!err){
         console.log(values);
+        history.push('/chart');
       }
     })
   }
@@ -36,6 +39,6 @@ class Login extends Component{
   }
 }
 
-const loginForm = Form.create()(Login);
+const loginForm = withRouter(Form.create()(Login));
 
 export default loginForm;
