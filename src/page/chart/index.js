@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { Layout, Icon, Row, Col, Button, Input } from 'antd';
 import style from './style.css';
 
-const { Header, Footer, Content } = Layout;
-
 const HeaderLayer = () => (
   <div className="header-row">
     <Row gutter={16}>
