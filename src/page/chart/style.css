@@ -1,4 +1,10 @@
 .header-row{
+  position: fixed;
+  top: 0px;
+  left: 0;
+  right: 0;
+  max-width: 768px;
+  margin: 0 auto;
   padding: .5rem 2rem;
   text-align: center;
   font-size: 1rem;
@@ -7,6 +13,9 @@
 }
 .header-col-1{
   text-align: left;
+}
+.header-col-1 a{
+  color: #fff;
 }
 .header-col-2{
   text-align: center;
