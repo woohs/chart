@@ -11,9 +11,15 @@ class Login extends Component{
     e.preventDefault();
     let history = this.props.history;
     this.props.form.validateFields((err, values) =>{
+      let path = {
+        pathname: '/chart',
+        state: {
+          username: values.username,
+        }
+      }
       if(!err){
-        console.log(values);
-        history.push('/chart');
+				console.log("​Login -> handleSubmit -> path", path)
+        history.push(path);
       }
     })
   }
