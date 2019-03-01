@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
 import { Form, Input, Button, Icon } from 'antd';
 import style from './style.css';
 import { Redirect,withRouter } from 'react-router-dom';
+import { userLogin } from '../../actions/login';
 
 const FormItem = Form.Item;
 
@@ -9,7 +11,7 @@ class Login extends Component{
 
   handleSubmit = (e) => {
     e.preventDefault();
-    let history = this.props.history;
+    let {history, submitLogin} = this.props;
     this.props.form.validateFields((err, values) =>{
       let path = {
         pathname: '/chart',
@@ -20,6 +22,7 @@ class Login extends Component{
       if(!err){
 				console.log("​Login -> handleSubmit -> path", path)
         history.push(path);
+        submitLogin(values.username)
       }
     })
   }
@@ -45,6 +48,17 @@ class Login extends Component{
   }
 }
 
+const mapStateToProps = state => ({
+  username: state.username,
+})
+
+const mapDispatchToProps = dispatch => ({
+  submitLogin: username => dispatch(userLogin({username}))
+})
+
 const loginForm = withRouter(Form.create()(Login));
 
-export default loginForm;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(loginForm);
