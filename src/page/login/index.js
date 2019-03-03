@@ -3,26 +3,34 @@ import { connect } from 'react-redux'
 import { Form, Input, Button, Icon } from 'antd';
 import style from './style.css';
 import { Redirect,withRouter } from 'react-router-dom';
-import { userLogin } from '../../actions/login';
+import { userLogin, userLogout } from '../../actions/login';
+import { setAuthority } from '../../utils/authority'
 
 const FormItem = Form.Item;
 
 class Login extends Component{
+  constructor(props){
+    super(props)
+    this.props.submitLogout()
+    setAuthority('')
+  }
 
   handleSubmit = (e) => {
     e.preventDefault();
     let {history, submitLogin} = this.props;
     this.props.form.validateFields((err, values) =>{
+      const username = values.username
       let path = {
-        pathname: '/chart',
+        pathname: '/app/chart',
         state: {
-          username: values.username,
+          username: username,
         }
       }
       if(!err){
 				console.log("​Login -> handleSubmit -> path", path)
+        submitLogin(username)
+        setAuthority(username)
         history.push(path);
-        submitLogin(values.username)
       }
     })
   }
@@ -53,7 +61,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  submitLogin: username => dispatch(userLogin({username}))
+  submitLogin: username => dispatch(userLogin({username})),
+  submitLogout: () => dispatch(userLogout())
 })
 
 const loginForm = withRouter(Form.create()(Login));

@@ -2,13 +2,15 @@ import React, { Component } from 'react';
 import { Layout, Icon, Row, Col, Button, Input, message } from 'antd';
 import { Link } from 'react-router-dom'
 import style from './style.css';
+import { connect } from 'react-redux';
+import { userLogout } from '../../actions/login';
 
 class ChartRoom extends Component{
   constructor(props){
     super(props);
     this.state = {
       roomName: '广场',
-      username: this.props.location.state.username,
+      username: this.props.username,
       record: [{'name': 'wujun', 'message': 'hello~'}],
       inputValue: '',
     }
@@ -44,6 +46,7 @@ class ChartRoom extends Component{
   }
   
   render(){
+    console.log('object ;', this.props.username);
     return (
       <div>
         <Layout>
@@ -60,7 +63,7 @@ const HeaderLayer = (props) => (
   <div className="header-row">
     <Row gutter={16}>
       <Col span={8} className="header-col-1">
-        <Link to="/"><Icon type="caret-left" /></Link>
+        <Link to="/login"><Icon type="caret-left" /></Link>
       </Col>
       <Col span={8} className="header-col-2">{props.roomName}</Col>
       <Col span={8} className="header-col-3"><Icon type="bars" /></Col>
@@ -101,5 +104,14 @@ const FooterLayer = (props) => (
   </div>
 )
 
+const mapStateToProps = state => ({
+  username: state.login.username,
+})
+const mapDispatchToProps = dispatch => ({
+  submitLogout: username => dispatch(userLogout({username}))
+})
 
-export default ChartRoom;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ChartRoom)
