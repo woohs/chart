@@ -4,7 +4,6 @@ import { Form, Input, Button, Icon } from 'antd';
 import style from './style.css';
 import { Redirect,withRouter } from 'react-router-dom';
 import { userLogin, userLogout } from '../../actions/login';
-import { setAuthority } from '../../utils/authority'
 
 const FormItem = Form.Item;
 
@@ -12,7 +11,6 @@ class Login extends Component{
   constructor(props){
     super(props)
     this.props.submitLogout()
-    setAuthority('')
   }
 
   handleSubmit = (e) => {
@@ -27,9 +25,7 @@ class Login extends Component{
         }
       }
       if(!err){
-				console.log("​Login -> handleSubmit -> path", path)
-        submitLogin(username)
-        setAuthority(username)
+        // submitLogin(username)
         history.push(path);
       }
     })
@@ -65,9 +61,9 @@ const mapDispatchToProps = dispatch => ({
   submitLogout: () => dispatch(userLogout())
 })
 
-const loginForm = withRouter(Form.create()(Login));
+const loginForm = Form.create()(Login);
 
-export default connect(
+export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(loginForm);
+)(loginForm));

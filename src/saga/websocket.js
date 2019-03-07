@@ -32,8 +32,8 @@ function webSocketChannel(ws){
     }
 
     ws.onmessage = (e) => {
-      console.log('received message: ', e)
-      emitter({type: ON_MESSAGE})
+      console.log('received message: ', e.data)
+      emitter({type: ON_MESSAGE, payload: JSON.parse(e.data)})
     }
 
     ws.onerror = (error) => {
@@ -57,7 +57,7 @@ function webSocketChannel(ws){
  * 
  * @param {*} sendData 要发送的数据
  * @param {*} wsUrl 要访问的socket地址
- * @param {*} ReceiveMsgActionType 收到message后，发出的action时间
+ * @param {*} ReceiveMsgActionType 收到message后，发出的action
  */
 function* watchWebSocketSaga(sendData='', wsUrl, ReceiveMsgActionType){
   const ws = yield call(wsConnect, wsUrl)
@@ -80,7 +80,7 @@ function* watchWebSocketSaga(sendData='', wsUrl, ReceiveMsgActionType){
         case ON_MESSAGE:{
           // ws.close()
           const data = 'ok'
-          const reducerAction = {type: ReceiveMsgActionType, payload: data}
+          const reducerAction = {type: ReceiveMsgActionType, payload: action.payload}
           yield put(reducerAction)
 
           break

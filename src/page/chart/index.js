@@ -46,7 +46,7 @@ class ChartRoom extends Component{
   }
   
   render(){
-    console.log('object ;', this.props.username);
+    console.log('chart page render');
     return (
       <div>
         <Layout>

@@ -1,34 +1,33 @@
 import React, { PureComponent } from 'react'
-import { Layout } from "antd";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { connect } from 'react-redux'
 import { userLogin } from '../actions/login'
 import ChartContent from './chart';  
 import { getAuthority } from '../utils/authority'
-import Login from './login';
 
-const { Footer } = Layout
+const Root = ({...props}) => {
+  const { setUsername, location } = props
+	console.log('TCL: Root -> props', props)
+  const getAuthorityUsername = getAuthority()
+	console.log('TCL: Root -> getAuthorityUsername', getAuthorityUsername)
+  const pathState = (location.state && location.state.username)
 
-
-class Root extends PureComponent{
-
-  render(){
-    const { setUsername } = this.props
-    const username = getAuthority()
-		console.log('TCL: Root -> render -> username', username)
-    if(username){
-      setUsername(username)
-    }else{
-      return <Redirect to="/login" />
-    }
-
-    return(
-      <Switch>
-        <Route path="/app/chart" component={ChartContent} />
-      </Switch>
-    )
+  if(pathState){
+    setUsername(pathState)
+  }else if(!getAuthorityUsername){
+    return <Redirect to="/login" />
+  }else{
+    setUsername(getAuthorityUsername)
   }
+
+  return(
+    <Switch>
+      <Route path="/app/chart" component={ChartContent} />
+      <Redirect to="/" />
+    </Switch>
+  )
 }
+
 const mapStateToProps = state => ({
   username: state.username,
 })
