@@ -5,6 +5,7 @@ import style from './style.css';
 import { connect } from 'react-redux';
 import { userLogout, userLogin } from '../../actions/login';
 import { getAuthority } from '../../utils/authority';
+import { sendMessage } from '../../actions/chart';
 
 class ChartRoom extends Component{
   constructor(props){
@@ -44,23 +45,28 @@ class ChartRoom extends Component{
   }
   handleSubmit(e){
     e.preventDefault();
+    const {sendMessage, username} = this.props
     let msg = {
-      name: this.state.username,
+      name: username,
       message: this.state.inputValue,
+      messageType: 'client_msg'
     }
-    let lastRecord = this.state.record;
-    lastRecord.push(msg);
-		console.log("​ChartRoom -> handleSubmit -> lastRecord", lastRecord)
-    this.setState(lastRecord);
+    // let lastRecord = this.state.record;
+    // lastRecord.push(msg);
+		// console.log("​ChartRoom -> handleSubmit -> lastRecord", lastRecord)
+    // this.setState(lastRecord);
+    
+    sendMessage(msg)
   }
   
   render(){
     console.log('chart page render');
+    const {chart} = this.props
     return (
       <div>
         <Layout>
           <HeaderLayer roomName={this.state.roomName}/>
-          <ContentLayer record={this.state.record}/>
+          <ContentLayer record={chart} />
           <FooterLayer inputValue={this.state.inputValue} handleChange={this.handleChange} handleSubmit={this.handleSubmit}/>
         </Layout>
       </div>
@@ -87,13 +93,41 @@ const ContentLayer = (props) => {
     <div className="content-row">
       <ul>
         {list.map((val, index) => (
-          <li key={index}>
-            {val.name} : {val.message}
-          </li>
+          handleChartData(val, index)
         ))}
       </ul>
     </div>
   )
+}
+
+function handleChartData(val, index){
+	console.log('TCL: handleChartData -> val', val)
+  if(val && val.type){
+    return ;
+  }
+  switch (val.type || '') {
+    case 'client_join':
+      return (
+        <li key={index} className='content-li li-info'>
+          {`[${val.time}] ${val.message}`}
+        </li>
+      )
+    case 'client_quite':
+      return(
+        <li key={index} className='content-li li-warning'>
+          {`[${val.time}] ${val.message}`}
+        </li>
+      )
+    case 'client_info':
+      return(
+        <li key={index} className='content-li li-msg'>
+          {`[${val.time}] ${val.username} : ${val.message}`}
+        </li>
+      )
+  
+    default:
+      return ''
+  }
 }
 
 // class FooterLayer extends Component{
@@ -115,10 +149,12 @@ const FooterLayer = (props) => (
 
 const mapStateToProps = state => ({
   username: state.login.username,
+  chart:state.chart.receive,
 })
 const mapDispatchToProps = dispatch => ({
   submitLogout: username => dispatch(userLogout({username})),
-  setUsername: (username, history) => dispatch(userLogin({username,history}))
+  setUsername: (username, history) => dispatch(userLogin({username,history})),
+  sendMessage: payload => dispatch(sendMessage({payload})),
 })
 
 export default withRouter(connect(

@@ -12,8 +12,9 @@ const history = createHistory()
 function* configWebSocket(data){
   const url = webSocketUrl
   const wsSendData = JSON.stringify({
-    type: 'client_join',
-    ...data,
+    messageType: 'client_join',
+    username: data.username,
+    message: `${data.username} 加入房间`
   })
   const socketSyncTask = yield fork(socketSaga, wsSendData, url, SOCKET_MESSAGE)
   setAuthority(data.username)

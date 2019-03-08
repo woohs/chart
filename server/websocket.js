@@ -37,7 +37,7 @@ wss.on('connection', function(ws, req){
       logger.info(`[info] client id: ${client_uid} . ip: ${client_ip} . message success: ${message}`)
     
       //收到改名信息（第一次进房）
-      if(row.type === 'client_join'){
+      if(row.messageType === 'client_join'){
         for(let i in clients){
           if(clients[i].id === client_uid){
             clients[i].username = row.username;
@@ -48,7 +48,7 @@ wss.on('connection', function(ws, req){
         id: row.id,
         username: row.username,
         message: row.message,
-        type: row.type,
+        type: row.messageType,
       }
       //广播信息
       wsSend(data);

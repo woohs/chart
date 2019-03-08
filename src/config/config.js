@@ -1,1 +1,1 @@
-export const webSocketUrl = 'ws://127.0.0.1:8282'
+export const webSocketUrl = `ws://${window.location.hostname}:8282`

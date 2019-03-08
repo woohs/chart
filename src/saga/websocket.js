@@ -1,5 +1,7 @@
 import { eventChannel} from "redux-saga";
-import { call, put, cancelled, take} from "redux-saga/effects";
+import { call, put, cancelled, take, fork} from "redux-saga/effects";
+import { SEND_MESSAGE } from '../actions/chart';
+import { watch } from "fs";
 
 /**
  * actionTypes
@@ -53,6 +55,13 @@ function webSocketChannel(ws){
   })
 }
 
+function* watchSendMsg(ws){
+  const action = yield take(SEND_MESSAGE)
+	console.log('TCL: function*watchSendMsg -> action', action)
+  
+  ws.send(JSON.stringify(action.payload))
+}
+
 /**
  * 
  * @param {*} sendData 要发送的数据
@@ -62,7 +71,7 @@ function webSocketChannel(ws){
 function* watchWebSocketSaga(sendData='', wsUrl, ReceiveMsgActionType){
   const ws = yield call(wsConnect, wsUrl)
   const channel = yield call(webSocketChannel, ws)
-
+  yield fork(watchSendMsg, ws)
   try{
     while(true){
       let action = yield take(channel)
