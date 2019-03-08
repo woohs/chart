@@ -25,8 +25,8 @@ class Login extends Component{
         }
       }
       if(!err){
-        // submitLogin(username)
-        history.push(path);
+        submitLogin(username, history)
+        // history.push(path);
       }
     })
   }
@@ -57,7 +57,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  submitLogin: username => dispatch(userLogin({username})),
+  submitLogin: (username, history) => dispatch(userLogin({username, history})),
   submitLogout: () => dispatch(userLogout())
 })
 

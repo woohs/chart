@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { Layout, Icon, Row, Col, Button, Input, message } from 'antd';
-import { Link } from 'react-router-dom'
+import { Link, withRouter, Redirect  } from 'react-router-dom'
 import style from './style.css';
 import { connect } from 'react-redux';
-import { userLogout } from '../../actions/login';
+import { userLogout, userLogin } from '../../actions/login';
+import { getAuthority } from '../../utils/authority';
 
 class ChartRoom extends Component{
   constructor(props){
@@ -25,7 +26,15 @@ class ChartRoom extends Component{
   }
 
   componentDidMount(){
-    message.success(`欢迎您 ${this.state.username}`);
+    const getAuthorityUsername = getAuthority()
+    const {username, history, setUsername} = this.props
+    if(!getAuthorityUsername){
+      message.warning(`请先取个帅气的名字`);
+      history.push('/')
+    }else if(!username){
+      setUsername(getAuthorityUsername, history)
+    }
+    
   }
 
   
@@ -108,10 +117,11 @@ const mapStateToProps = state => ({
   username: state.login.username,
 })
 const mapDispatchToProps = dispatch => ({
-  submitLogout: username => dispatch(userLogout({username}))
+  submitLogout: username => dispatch(userLogout({username})),
+  setUsername: (username, history) => dispatch(userLogin({username,history}))
 })
 
-export default connect(
+export default withRouter(connect(
   mapStateToProps,
   mapDispatchToProps
-)(ChartRoom)
+)(ChartRoom))
