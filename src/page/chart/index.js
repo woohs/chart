@@ -47,7 +47,7 @@ class ChartRoom extends Component{
     e.preventDefault();
     const {sendMessage, username} = this.props
     let msg = {
-      name: username,
+      username: username,
       message: this.state.inputValue,
       messageType: 'client_msg'
     }
@@ -102,10 +102,10 @@ const ContentLayer = (props) => {
 
 function handleChartData(val, index){
 	console.log('TCL: handleChartData -> val', val)
-  if(val && val.type){
+  if(val && val.messageType.length <= 0){
     return ;
   }
-  switch (val.type || '') {
+  switch (val.messageType || '') {
     case 'client_join':
       return (
         <li key={index} className='content-li li-info'>
@@ -118,7 +118,7 @@ function handleChartData(val, index){
           {`[${val.time}] ${val.message}`}
         </li>
       )
-    case 'client_info':
+    case 'client_msg':
       return(
         <li key={index} className='content-li li-msg'>
           {`[${val.time}] ${val.username} : ${val.message}`}

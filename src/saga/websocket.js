@@ -56,10 +56,10 @@ function webSocketChannel(ws){
 }
 
 function* watchSendMsg(ws){
-  const action = yield take(SEND_MESSAGE)
-	console.log('TCL: function*watchSendMsg -> action', action)
-  
-  ws.send(JSON.stringify(action.payload))
+  while(true){
+    const action = yield take(SEND_MESSAGE)
+    ws.send(JSON.stringify(action.payload))
+  }
 }
 
 /**

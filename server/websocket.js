@@ -48,7 +48,7 @@ wss.on('connection', function(ws, req){
         id: row.id,
         username: row.username,
         message: row.message,
-        type: row.messageType,
+        messageType: row.messageType,
       }
       //广播信息
       wsSend(data);
@@ -74,7 +74,7 @@ wss.on('connection', function(ws, req){
       id: client_uid,
       username: client_name,
       message: `${client_name} 退出房间`,
-      type: 'client_quite',
+      messageType: 'client_quite',
     }
     //广播信息
     wsSend(data);
