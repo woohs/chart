@@ -19,12 +19,13 @@ wss.on('connection', function(ws, req){
  
   let client_uid = uuid.v4();//分配用户端uid
   let client_ip = req.connection.remoteAddress;//获取连接用户端的IP
-
+  let client_color = getUserColor();
   clients.push({
     id: client_uid, 
     ws: ws, 
     username: '', 
-    ip: client_ip
+    ip: client_ip,
+    client_color: client_color,
   });
 
   logger.info(`[info] client id: ${client_uid} . ip: ${client_ip} . connection`)
@@ -49,6 +50,7 @@ wss.on('connection', function(ws, req){
         username: row.username,
         message: row.message,
         messageType: row.messageType,
+        client_color: client_color,
       }
       //广播信息
       wsSend(data);
@@ -122,3 +124,14 @@ Date.prototype.format = function(fmt) {
   }
   return fmt;
 };
+
+//彩蛋：随机生成用户背景色
+function getUserColor(){
+  let r = (Math.random() * 255).toFixed(0)
+  let g = (Math.random() * 255).toFixed(0)
+  let b = (Math.random() * 255).toFixed(0)
+  let o = (Math.random() * 0.5).toFixed(2)
+
+  return `rgb(${r},${g},${b},${o})`
+
+}

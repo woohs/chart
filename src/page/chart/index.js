@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Layout, Icon, Row, Col, Button, Input, message } from 'antd';
+import { Layout, Icon, Row, Col, Button, Input, message, Menu, Dropdown } from 'antd';
 import { Link, withRouter, Redirect  } from 'react-router-dom'
 import style from './style.css';
 import { connect } from 'react-redux';
@@ -51,11 +51,6 @@ class ChartRoom extends Component{
       message: this.state.inputValue,
       messageType: 'client_msg'
     }
-    // let lastRecord = this.state.record;
-    // lastRecord.push(msg);
-		// console.log("​ChartRoom -> handleSubmit -> lastRecord", lastRecord)
-    // this.setState(lastRecord);
-    
     sendMessage(msg)
   }
   
@@ -81,9 +76,30 @@ const HeaderLayer = (props) => (
         <Link to="/login"><Icon type="caret-left" /></Link>
       </Col>
       <Col span={8} className="header-col-2">{props.roomName}</Col>
-      <Col span={8} className="header-col-3"><Icon type="bars" /></Col>
+      <Col span={8} className="header-col-3">{DropMenu}</Col>
     </Row>
   </div>
+)
+const menu = (
+  <Menu>
+    <Menu.Item key="0">
+      聊天室
+    </Menu.Item>
+    <Menu.Item key="1">
+      开发中
+    </Menu.Item>
+    <Menu.Divider />
+    <Menu.Item key="3">
+      <a href="https://github.com/woohs/chart">github地址</a>
+    </Menu.Item>
+  </Menu>
+);
+const DropMenu = (
+  <Dropdown overlay={menu} trigger={['click']}>
+    <a className="ant-dropdown-link" href="#">
+      <Icon type="bars" />
+    </a>
+  </Dropdown>
 )
 
 const ContentLayer = (props) => {
@@ -120,8 +136,8 @@ function handleChartData(val, index){
       )
     case 'client_msg':
       return(
-        <li key={index} className='content-li li-msg'>
-          {`[${val.time}] ${val.username} : ${val.message}`}
+        <li key={index} className='content-li li-msg' style={{backgroundColor: `${val.client_color}`}}>
+          {`[${val.time.slice(11, 20)}] ${val.username} : ${val.message}`}
         </li>
       )
   
@@ -130,16 +146,6 @@ function handleChartData(val, index){
   }
 }
 
-// class FooterLayer extends Component{
-//   render(){
-//     return(
-//       <div className="footer-row">
-//         <Input value={this.props.inputValue} onChange={this.props.handleChange}/>
-//         <Button type="primary" onClick={this.props.handleSubmit}>发送</Button>
-//       </div>
-//     )
-//   }
-// }
 const FooterLayer = (props) => (
   <div className="footer-row">
     <Input value={props.inputValue} onChange={props.handleChange}/>

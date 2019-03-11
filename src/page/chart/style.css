@@ -49,11 +49,29 @@
   height: 100%;
   margin-top: 2.2rem;
 }
+.content-row > ul{
+  padding: 0;
+  margin: 0;
+}
+.content-li{
+  list-style: none;
+  margin: 5px;
+  font-size: 1rem;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  background: #dedede;
+  word-break: break-all;
+}
 .li-info{
-  color: #0850ad
+  color: #0850ad;
+  text-align: center;
 }
 .li-warning{
-  color: #b95d1f
+  color: #b95d1f;
+  text-align: center;
 }
 .li-msg{
   color: #000
